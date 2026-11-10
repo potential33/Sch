@@ -208,7 +208,7 @@ $rows = ($subjectId && $classArmId && $termId)
     value="<?= e($val) ?>"
     max="<?= e($weights[$comp]) ?>" <?= $status === 'approved' ? 'disabled' : '' ?>></td>
 <?php endforeach; ?>
-                    <td class="total-cell"><?= $r['total'] !== null ? e(rtrim(rtrim((string)$r['total'], '0'), '.')) : '—' ?></td>
+                    <td class="total-cell"><?= e(fmt_num($r['total'])) ?></td>
                     <td>
                         <?php if ($status === 'submitted'): ?>
                             <span class="tag ok">submitted</span>

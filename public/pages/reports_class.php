@@ -124,7 +124,7 @@ if ($classArmId && $sessionId && $termId) {
                     $cell = $r['scores'][(int)$sub['id']] ?? null; ?>
                     <td style="text-align:right;">
                         <?php if ($cell && $cell['total'] !== null): ?>
-                            <?= e(rtrim(rtrim((string)$cell['total'],'0'),'.')) ?>
+                            <?= e(fmt_num($cell['total'])) ?>
                             <small class="muted">(<?= e($cell['grade']) ?>)</small>
                         <?php else: ?>
                             <span class="muted">—</span>
@@ -132,7 +132,7 @@ if ($classArmId && $sessionId && $termId) {
                     </td>
                 <?php endforeach; ?>
                 <td class="total-cell" style="text-align:right;">
-                    <?= $r['has_any'] ? e(rtrim(rtrim((string)$r['sum'],'0'),'.')) : '—' ?>
+                    <?= $r['has_any'] ? e(fmt_num($r['sum'])) : '—' ?>
                 </td>
                 <td style="text-align:right;">
                     <?= $r['has_any'] ? e(number_format($r['avg'], 1)) : '—' ?>

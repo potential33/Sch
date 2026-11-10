@@ -38,3 +38,16 @@ function route_link(string $r, array $params = []): string
     $q = array_merge(['r' => $r], $params);
     return '/?' . http_build_query($q);
 }
+
+/** Format a number for display: strip .5 → .5, keep 300 as 300, keep 82.5 as 82.5 */
+function fmt_num($n): string
+{
+    if ($n === null || $n === '') return '—';
+    $n = (float)$n;
+    // Show as integer if whole
+    if (abs($n - round($n)) < 0.0001) {
+        return (string)(int)round($n);
+    }
+    // Up to 2 decimal places, no trailing zeros
+    return rtrim(rtrim(number_format($n, 2, '.', ''), '0'), '.');
+}

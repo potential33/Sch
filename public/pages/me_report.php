@@ -37,7 +37,15 @@ if ($sessionId && $termId) {
     .card { box-shadow: none; border: 1px solid #ccc; }
     main { max-width: none; padding: 0; }
     .report-header { border-bottom: 2px solid #000; padding-bottom: .5rem; }
+    .print-provisional {
+        display: block !important;
+        color: #991b1b;
+        font-size: .75rem;
+        text-align: center;
+        margin-top: .5rem;
+    }
 }
+.print-provisional { display: none; }   /* hidden on screen */
 .report-header { text-align: center; margin-bottom: 1rem; }
 .report-header h1 { margin: 0; font-size: 1.3rem; }
 .report-header .sub { color: #555; font-size: .9rem; }
@@ -82,32 +90,25 @@ if ($sessionId && $termId) {
 <?php elseif (!$published): ?>
     <div class="card">
         <p><strong>Your report card for this term is not yet available.</strong></p>
-      <?php
-    // Detect provisional: coverage gaps for this enrollment at publish time (approx)
-    $enrId = (int)$report['enrollment']['enrollment_id'];
-    $missingNow = (int) fetch_val(
-        "SELECT COUNT(*) FROM class_arm_subjects cas
-         WHERE cas.class_arm_id = ?
-           AND NOT EXISTS (
-             SELECT 1 FROM results r
-             WHERE r.enrollment_id = ?
-               AND r.subject_id = cas.subject_id
-               AND r.term_id = ?
-               AND r.status IN ('submitted','approved')
-           )
-           AND NOT EXISTS (
-             SELECT 1 FROM subject_exemptions se
-             WHERE se.enrollment_id = ? AND se.subject_id = cas.subject_id
-           )",
-        [(int)$report['enrollment']['class_arm_id'], $enrId, $termId, $enrId]
-    );
-?>
-<?php if ($missingNow > 0): ?>
-    <div class="flash flash-error" style="margin-bottom:1rem;">
-        <strong>Provisional report.</strong>
-        <?= e((string)$missingNow) ?> subject(s) not yet recorded. Contact the school office if this looks wrong.
-    </div>
-<?php endif; ?>
+          <?php
+        $enrId = (int)$report['enrollment']['enrollment_id'];
+        $missingNow = (int) fetch_val(
+            "SELECT COUNT(*) FROM class_arm_subjects cas
+             WHERE cas.class_arm_id = ?
+               AND NOT EXISTS (
+                 SELECT 1 FROM results r
+                 WHERE r.enrollment_id = ?
+                   AND r.subject_id = cas.subject_id
+                   AND r.term_id = ?
+                   AND r.status IN ('submitted','approved')
+               )
+               AND NOT EXISTS (
+                 SELECT 1 FROM subject_exemptions se
+                 WHERE se.enrollment_id = ? AND se.subject_id = cas.subject_id
+               )",
+            [(int)$report['enrollment']['class_arm_id'], $enrId, $termId, $enrId]
+        );
+    ?>
         <p class="muted">It will appear here once the school publishes it.</p>
     </div>
 <?php else: ?>

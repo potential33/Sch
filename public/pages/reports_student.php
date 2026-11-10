@@ -134,7 +134,7 @@ if ($studentId && $sessionId && $termId) {
                     <td style="text-align:right;"><?= e($sub['ca2'] ?? '—') ?></td>
                     <td style="text-align:right;"><?= e($sub['ca3'] ?? '—') ?></td>
                     <td style="text-align:right;"><?= e($sub['exam'] ?? '—') ?></td>
-                    <td style="text-align:right;"><strong><?= e(rtrim(rtrim((string)$sub['total'],'0'),'.')) ?></strong></td>
+                    <td style="text-align:right;"><strong><?= e(fmt_num($sub['total'])) ?></strong></td>
                     <td style="text-align:center;"><strong><?= e($sub['grade']) ?></strong></td>
                 </tr>
             <?php endforeach; ?>
@@ -142,7 +142,7 @@ if ($studentId && $sessionId && $termId) {
             <tfoot>
                 <tr>
                     <td colspan="5" style="text-align:right;"><strong>Total / Average</strong></td>
-                    <td style="text-align:right;"><strong><?= e(rtrim(rtrim((string)$report['totals']['sum'],'0'),'.')) ?></strong></td>
+                    <td style="text-align:right;"><strong><?= e(fmt_num($report['totals']['sum'])) ?></strong></td>
                     <td style="text-align:center;">
                         <strong><?= e(number_format($report['totals']['avg'], 1)) ?></strong>
                     </td>
